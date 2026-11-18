@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopBug - Shopping Cart</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- HEADER / NAVIGATION -->
+    <header>
+        <a href="index.html" class="logo-link">
+            <h1>ShopBug</h1>
+            <span class="logo-badge">Store</span>
+        </a>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="login.html">Login</a>
+            <div class="cart-link-wrapper">
+                <a href="cart.html" class="active">
+                    Cart
+                    <span class="cart-badge" id="cartCount">0</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- STEP PROGRESS -->
+    <div class="checkout-steps">
+        <div class="step-item active">
+            <span class="step-circle">1</span>
+            <span>Cart</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step-item">
+            <span class="step-circle">2</span>
+            <span>Shipping</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step-item">
+            <span class="step-circle">3</span>
+            <span>Payment</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step-item">
+            <span class="step-circle">4</span>
+            <span>Success</span>
+        </div>
+    </div>
+
+    <!-- MAIN CART CONTENT -->
+    <main>
+        <div class="section-header">
+            <h2>Your Shopping Cart</h2>
+            <a href="index.html" class="back-link">← Continue Shopping</a>
+        </div>
+
+        <div class="cart-layout">
+            <!-- ITEMS LIST -->
+            <div class="cart-items-container" id="cartContainer">
+                <div id="cartItems"></div>
+            </div>
+
+            <!-- ORDER SUMMARY -->
+            <div class="cart-summary-box">
+                <h3>Order Summary</h3>
+
+                <div class="summary-line">
+                    <span>Subtotal</span>
+                    <span id="cartSubtotal">₹0</span>
+                </div>
+
+                <div class="summary-line">
+                    <span>Discount</span>
+                    <span id="cartDiscount" style="color: var(--success);">- ₹0</span>
+                </div>
+
+                <div class="summary-line">
+                    <span>Shipping</span>
+                    <span style="color: var(--success);">FREE</span>
+                </div>
+
+                <!-- COUPON CODE SECTION (INTENTIONAL BUG #4: Unlimited stackable coupon) -->
+                <div class="coupon-section">
+                    <label for="couponInput">Have a promo code?</label>
+                    <div class="coupon-input-group">
+                        <input
+                            type="text"
+                            id="couponInput"
+                            placeholder="Try SAVE500"
+                        >
+                        <button type="button" id="applyCouponBtn" onclick="applyCoupon()">
+                            Apply
+                        </button>
+                    </div>
+                    <p id="couponMessage" class="coupon-message"></p>
+                </div>
+
+                <div class="summary-line total-line">
+                    <span>Estimated Total</span>
+                    <strong id="cartTotal">Total: ₹0</strong>
+                </div>
+
+                <button
+                    onclick="goToCheckout()"
+                    style="width: 100%; margin-top: 18px; padding: 14px;"
+                >
+                    Proceed to Checkout →
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 ShopBug. Intentionally Buggy E-Commerce Store for AI Testing with TestNova.</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

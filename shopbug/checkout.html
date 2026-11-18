@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopBug - Shipping & Checkout</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- HEADER / NAVIGATION -->
+    <header>
+        <a href="index.html" class="logo-link">
+            <h1>ShopBug</h1>
+            <span class="logo-badge">Store</span>
+        </a>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="login.html">Login</a>
+            <div class="cart-link-wrapper">
+                <a href="cart.html">
+                    Cart
+                    <span class="cart-badge" id="cartCount">0</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- STEP PROGRESS -->
+    <div class="checkout-steps">
+        <div class="step-item completed">
+            <span class="step-circle">✓</span>
+            <span>Cart</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step-item active">
+            <span class="step-circle">2</span>
+            <span>Shipping</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step-item">
+            <span class="step-circle">3</span>
+            <span>Payment</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step-item">
+            <span class="step-circle">4</span>
+            <span>Success</span>
+        </div>
+    </div>
+
+    <!-- MAIN CHECKOUT CONTENT -->
+    <main>
+        <div class="section-header">
+            <h2>Shipping & Delivery Details</h2>
+            <a href="cart.html" class="back-link">← Return to Cart</a>
+        </div>
+
+        <div class="checkout-layout">
+            <!-- DELIVERY FORM -->
+            <div class="checkout-card">
+                <h3>Enter Your Delivery Details</h3>
+
+                <form id="checkoutForm" class="checkout-form">
+                    <label for="fullName">Full Name</label>
+                    <input
+                        type="text"
+                        id="fullName"
+                        placeholder="John Doe"
+                    >
+
+                    <label for="address">Delivery Address</label>
+                    <input
+                        type="text"
+                        id="address"
+                        placeholder="123 Shopping Avenue, City, State"
+                    >
+
+                    <div class="location-btn-wrapper">
+                        <button
+                            type="button"
+                            class="location-btn"
+                            onclick="getCurrentLocation()"
+                        >
+                            📍 Use My Current Location (GPS)
+                        </button>
+                    </div>
+                    <p id="locationMessage"></p>
+
+                    <!-- INTENTIONAL BUG #6: No phone validation; accepts non-numeric string -->
+                    <label for="phone">Phone Number (10 digits)</label>
+                    <input
+                        type="tel"
+                        id="phone"
+                        placeholder="e.g. 9876543210"
+                    >
+
+                    <div style="margin-top: 24px;">
+                        <button type="submit" style="width: 100%; padding: 14px; font-size: 15px;">
+                            Continue to Payment →
+                        </button>
+                    </div>
+                </form>
+
+                <p id="checkoutMessage" style="margin-top: 15px; font-size: 14px; font-weight: 600;"></p>
+            </div>
+
+            <!-- ORDER SUMMARY SIDEBAR -->
+            <div class="cart-summary-box">
+                <h3>Order Preview</h3>
+
+                <div id="checkoutItemsList" style="margin-bottom: 16px;"></div>
+
+                <div class="summary-line">
+                    <span>Shipping</span>
+                    <span style="color: var(--success);">FREE</span>
+                </div>
+
+                <div class="summary-line total-line">
+                    <span>Payable Amount</span>
+                    <strong id="checkoutTotal">Total: ₹0</strong>
+                </div>
+
+                <div class="summary-note" style="margin-top: 20px;">
+                    <p>📦 Delivery Guarantee</p>
+                    <small>Items will be dispatched within 24 hours after payment confirmation.</small>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 ShopBug. Intentionally Buggy E-Commerce Store for AI Testing with TestNova.</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

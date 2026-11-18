@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopBug - Modern Online Shopping</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- HEADER / NAVIGATION -->
+    <header>
+        <a href="index.html" class="logo-link">
+            <h1>ShopBug</h1>
+            <span class="logo-badge">Store</span>
+        </a>
+
+        <nav>
+            <a href="index.html" class="active">Home</a>
+            <a href="#products-section">Products</a>
+            <a href="login.html">Login</a>
+            <div class="cart-link-wrapper">
+                <a href="cart.html">
+                    Cart
+                    <span class="cart-badge" id="cartCount">0</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- HERO SECTION & SEARCH -->
+    <section class="hero">
+        <h2>Welcome to ShopBug!</h2>
+        <p>Discover top-tier electronics, fashion, and lifestyle products with instant delivery.</p>
+
+        <div class="search-box">
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search for headphones, shoes, watch..."
+                onkeyup="if(event.key === 'Enter') searchProducts()"
+            >
+            <button id="searchBtn" onclick="searchProducts()">
+                Search
+            </button>
+        </div>
+    </section>
+
+    <!-- CATEGORY FILTER TABS -->
+    <div class="category-filters">
+        <button class="category-btn active" onclick="filterCategory('All')">All Products</button>
+        <button class="category-btn" onclick="filterCategory('Electronics')">Electronics</button>
+        <button class="category-btn" onclick="filterCategory('Fashion')">Fashion</button>
+        <button class="category-btn" onclick="filterCategory('Accessories')">Accessories</button>
+        <button class="category-btn" onclick="filterCategory('Lifestyle')">Lifestyle</button>
+    </div>
+
+    <!-- MAIN PRODUCTS SECTION -->
+    <main id="products-section">
+        <div class="section-header">
+            <h2>Our Products</h2>
+            <span id="productsCount" class="product-count-label">Showing 12 products</span>
+        </div>
+
+        <div class="product-container" id="productGrid">
+
+            <!-- PRODUCT 1 (Targeted by TestNova cartTest.js) -->
+            <div class="product-card product" data-category="Electronics">
+                <span class="card-badge popular">Popular</span>
+                <img
+                    src="https://placehold.co/250x180?text=Headphones"
+                    alt="Wireless Headphones"
+                >
+                <span class="product-category-tag">Electronics</span>
+                <h3>Wireless Headphones</h3>
+                <div class="product-rating">★★★★☆ <span class="rating-count">(142)</span></div>
+                <div class="product-price-row">
+                    <p>₹1,499</p>
+                    <span class="original-price">₹2,499</span>
+                </div>
+                <button onclick="addToCart('Wireless Headphones', 1499)">
+                    Add to Cart
+                </button>
+            </div>
+
+            <!-- PRODUCT 2 -->
+            <div class="product-card product" data-category="Electronics">
+                <span class="card-badge sale">Sale</span>
+                <img
+                    src="https://placehold.co/250x180?text=Smart+Watch"
+                    alt="Smart Watch"
+                >
+                <span class="product-category-tag">Electronics</span>
+                <h3>Smart Watch</h3>
+                <div class="product-rating">★★★★★ <span class="rating-count">(98)</span></div>
+                <div class="product-price-row">
+                    <p>₹2,499</p>
+                    <span class="original-price">₹3,999</span>
+                </div>
+                <button onclick="addToCart('Smart Watch', 2499)">
+                    Add to Cart
+                </button>
+            </div>
+
+            <!-- PRODUCT 3 -->
+            <div class="product-card product" data-category="Fashion">
+                <span class="card-badge popular">Trending</span>
+                <img
+                    src="https://placehold.co/250x180?text=Running+Shoes"
+                    alt="Running Shoes"
+                >
+                <span class="product-category-tag">Fashion</span>
+                <h3>Running Shoes</h3>
+                <div class="product-rating">★★★★☆ <span class="rating-count">(86)</span></div>
+                <div class="product-price-row">
+                    <p>₹1,999</p>
+                    <span class="original-price">₹2,999</span>
+                </div>
+                <button onclick="addToCart('Running Shoes', 1999)">
+                    Add to Cart
+                </button>
+            </div>
+
+            <!-- PRODUCT 4 -->
+            <div class="product-card product" data-category="Accessories">
+                <img
+                    src="https://placehold.co/250x180?text=Backpack"
+                    alt="Travel Backpack"
+                >
+                <span class="product-category-tag">Accessories</span>
+                <h3>Travel Backpack</h3>
+                <div class="product-rating">★★★★☆ <span class="rating-count">(54)</span></div>
+                <div class="product-price-row">
+                    <p>₹999</p>
+                    <span class="original-price">₹1,499</span>
+                </div>
+                <button onclick="addToCart('Travel Backpack', 999)">
+                    Add to Cart
+                </button>
+            </div>
+
+            <!-- PRODUCT 5 (NEW) -->
+            <div class="product-card product" data-category="Electronics">
+                <span class="card-badge popular">Hot</span>
+                <img
+                    src="https://placehold.co/250x180?text=Gaming+Keyboard"
+                    alt="Mechanical Gaming Keyboard"
+                >
+                <span class="product-category-tag">Electronics</span>
+                <h3>Mechanical Gaming Keyboard</h3>
+                <div class="product-rating">★★★★★ <span class="rating-count">(112)</span></div>
+                <div class="product-price-row">
+                    <p>₹3,499</p>
+                    <span class="original-price">₹4,999</span>
+                </div>
+                <button onclick="addToCart('Mechanical Gaming Keyboard', 3499)">
+                    Add to Cart
+                </button>
+            </div>
+
+            <!-- PRODUCT 6 (NEW) -->
+            <div class="product-card product" data-category="Electronics">
+                <img
+                    src="https://placehold.co/250x180?text=Earbuds"
+                    alt="Noise Cancelling Earbuds"
+                >
+                <span class="product-category-tag">Electronics</span>
+                <h3>Noise Cancelling Earbuds</h3>
+                <div class="product-rating">★★★★☆ <span class="rating-count">(73)</span></div>
+                <div class="product-price-row">
+                    <p>₹2,799</p>
+                    <span class="original-price">₹3,599</span>
+                </div>
+                <button onclick="addToCart('Noise Cancelling Earbuds', 2799)">
+                    Add to Cart
+                </button>
+            </div>
+
+            <!-- PRODUCT 7 (NEW) -->
+            <div class="product-card product" data-category="Electronics">
+                <span class="card-badge sale">Sale</span>
+                <img
+                    src="https://placehold.co/250x180?text=Action+Camera"
+                    alt="4K Action Camera"
+                >
+                <span class="product-category-tag">Electronics</span>
+                <h3>4K Action Camera</h3>
+                <div class="product-rating">★★★★★ <span class="rating-count">(64)</span></div>
+                <div class="product-price-row">
+                    <p>₹6,999</p>
+                    <span class="original-price">₹8,999</span>
+                </div>
+                <button onclick="addToCart('4K Action Camera', 6999)">
+                    Add to Cart
+                </button>
+            </div>
+
+            <!-- PRODUCT 8 (NEW) -->
+            <div class="product-card product" data-category="Lifestyle">
+                <img
+                    src="https://placehold.co/250x180?text=Ergo+Chair"
+                    alt="Ergonomic Office Chair"
+                >
+                <span class="product-category-tag">Lifestyle</span>
+                <h3>Ergonomic Office Chair</h3>
+                <div class="product-rating">★★★★☆ <span class="rating-count">(91)</span></div>
+                <div class="product-price-row">
+                    <p>₹5,499</p>
+                    <span class="original-price">₹7,499</span>
+                </div>
+                <button onclick="addToCart('Ergonomic Office Chair', 5499)">
+                    Add to Cart
+                </button>
+            </div>
+
+            <!-- PRODUCT 9 (NEW) -->
+            <div class="product-card product" data-category="Accessories">
+                <img
+                    src="https://placehold.co/250x180?text=Water+Bottle"
+                    alt="Stainless Steel Water Bottle"
+                >
+                <span class="product-category-tag">Accessories</span>
+                <h3>Stainless Steel Water Bottle</h3>
+                <div class="product-rating">★★★★☆ <span class="rating-count">(38)</span></div>
+                <div class="product-price-row">
+                    <p>₹699</p>
+                    <span class="original-price">₹999</span>
+                </div>
+                <button onclick="addToCart('Stainless Steel Water Bottle', 699)">
+                    Add to Cart
+                </button>
+            </div>
+
+            <!-- PRODUCT 10 (NEW) -->
+            <div class="product-card product" data-category="Electronics">
+                <img
+                    src="https://placehold.co/250x180?text=Wireless+Charger"
+                    alt="Fast Wireless Charging Pad"
+                >
+                <span class="product-category-tag">Electronics</span>
+                <h3>Fast Wireless Charging Pad</h3>
+                <div class="product-rating">★★★★☆ <span class="rating-count">(47)</span></div>
+                <div class="product-price-row">
+                    <p>₹1,199</p>
+                    <span class="original-price">₹1,799</span>
+                </div>
+                <button onclick="addToCart('Fast Wireless Charging Pad', 1199)">
+                    Add to Cart
+                </button>
+            </div>
+
+            <!-- PRODUCT 11 (NEW) -->
+            <div class="product-card product" data-category="Electronics">
+                <span class="card-badge popular">Popular</span>
+                <img
+                    src="https://placehold.co/250x180?text=Bluetooth+Speaker"
+                    alt="Bluetooth Portable Speaker"
+                >
+                <span class="product-category-tag">Electronics</span>
+                <h3>Bluetooth Portable Speaker</h3>
+                <div class="product-rating">★★★★★ <span class="rating-count">(105)</span></div>
+                <div class="product-price-row">
+                    <p>₹1,899</p>
+                    <span class="original-price">₹2,699</span>
+                </div>
+                <button onclick="addToCart('Bluetooth Portable Speaker', 1899)">
+                    Add to Cart
+                </button>
+            </div>
+
+            <!-- PRODUCT 12 (NEW) -->
+            <div class="product-card product" data-category="Fashion">
+                <img
+                    src="https://placehold.co/250x180?text=Sunglasses"
+                    alt="Polarized Sunglasses"
+                >
+                <span class="product-category-tag">Fashion</span>
+                <h3>Polarized Sunglasses</h3>
+                <div class="product-rating">★★★★☆ <span class="rating-count">(62)</span></div>
+                <div class="product-price-row">
+                    <p>₹1,299</p>
+                    <span class="original-price">₹1,999</span>
+                </div>
+                <button onclick="addToCart('Polarized Sunglasses', 1299)">
+                    Add to Cart
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 ShopBug. Intentionally Buggy E-Commerce Store for AI Testing with TestNova.</p>
+        <details class="tester-cheat-sheet">
+            <summary>🔍 TestNova Bug Target Catalog (Click to inspect intentional bugs)</summary>
+            <div class="tester-badge-list">
+                <span class="tester-bug-tag">Bug-01: Auth Bypass (login.html)</span>
+                <span class="tester-bug-tag">Bug-02: Case-Sensitive Search Glitch</span>
+                <span class="tester-bug-tag">Bug-03: Negative Quantity Entry (cart.html)</span>
+                <span class="tester-bug-tag">Bug-04: Coupon Loop / Negative Subtotal (cart.html)</span>
+                <span class="tester-bug-tag">Bug-05: Empty Cart Checkout (checkout.html)</span>
+                <span class="tester-bug-tag">Bug-06: Non-Numeric Phone Bypass (checkout.html)</span>
+                <span class="tester-bug-tag">Bug-07: Expired Card Accepted (payment.html)</span>
+            </div>
+        </details>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

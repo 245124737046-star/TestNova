@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopBug - Order Successful</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- HEADER / NAVIGATION -->
+    <header>
+        <a href="index.html" class="logo-link">
+            <h1>ShopBug</h1>
+            <span class="logo-badge">Store</span>
+        </a>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="login.html">Login</a>
+            <div class="cart-link-wrapper">
+                <a href="cart.html">
+                    Cart
+                    <span class="cart-badge" id="cartCount">0</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- STEP PROGRESS -->
+    <div class="checkout-steps">
+        <div class="step-item completed">
+            <span class="step-circle">✓</span>
+            <span>Cart</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step-item completed">
+            <span class="step-circle">✓</span>
+            <span>Shipping</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step-item completed">
+            <span class="step-circle">✓</span>
+            <span>Payment</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step-item completed">
+            <span class="step-circle">✓</span>
+            <span>Completed</span>
+        </div>
+    </div>
+
+    <main>
+        <div class="success-container">
+            <div class="success-icon">✓</div>
+
+            <h2>Order Placed Successfully!</h2>
+
+            <p class="success-description">
+                Thank you for shopping with ShopBug! Your demo order has been received and scheduled for dispatch.
+            </p>
+
+            <div class="success-details">
+                <h3>Order Receipt</h3>
+
+                <p>
+                    <strong>Order Number:</strong>
+                    <span id="orderNumber">SB-83941</span>
+                </p>
+
+                <p>
+                    <strong>Estimated Delivery:</strong>
+                    <span id="deliveryDate">Within 3-5 Business Days</span>
+                </p>
+
+                <!-- TARGETED BY SCRIPT.JS / TESTSUITE -->
+                <p>
+                    <strong>Customer:</strong>
+                    <span id="customerName"></span>
+                </p>
+
+                <p>
+                    <strong>Payment Method:</strong>
+                    <span id="paymentMethod"></span>
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+                    <span id="paymentStatus"></span>
+                </p>
+            </div>
+
+            <p class="success-note">
+                ⓘ This is an automated demo simulation for TestNova AI platform evaluation.
+            </p>
+
+            <div class="success-action-buttons">
+                <button
+                    type="button"
+                    class="secondary-button pay-button"
+                    style="margin-top: 0;"
+                    onclick="window.print()"
+                >
+                    🖨️ Print Receipt
+                </button>
+
+                <button
+                    type="button"
+                    class="pay-button"
+                    style="margin-top: 0;"
+                    onclick="window.location.href='index.html'"
+                >
+                    Continue Shopping →
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 ShopBug. Intentionally Buggy E-Commerce Store for AI Testing with TestNova.</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

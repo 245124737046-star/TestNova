@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopBug - Account Login</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- HEADER / NAVIGATION -->
+    <header>
+        <a href="index.html" class="logo-link">
+            <h1>ShopBug</h1>
+            <span class="logo-badge">Store</span>
+        </a>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="login.html" class="active">Login</a>
+            <div class="cart-link-wrapper">
+                <a href="cart.html">
+                    Cart
+                    <span class="cart-badge" id="cartCount">0</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- MAIN LOGIN CARD -->
+    <main>
+        <div class="login-container">
+            <h2>Welcome Back!</h2>
+            <p>Sign in to track orders, access your cart, and checkout faster.</p>
+
+            <!-- FORM TARGETED BY TESTNOVA loginTest.js -->
+            <form id="loginForm">
+                <label for="email">Email Address</label>
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="name@example.com"
+                    required
+                >
+
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter your password"
+                    required
+                >
+
+                <button type="submit">Login to Account</button>
+            </form>
+
+            <p class="register-link">
+                Don't have an account? <a href="#" onclick="alert('Registration demo: You can login directly with any credentials due to Bug-01!')">Register here</a>
+            </p>
+
+            <!-- MESSAGE TARGETED BY TESTNOVA loginTest.js -->
+            <p id="loginMessage"></p>
+
+            <div style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 15px;">
+                <a href="index.html" class="back-link">← Back to Store</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 ShopBug. Intentionally Buggy E-Commerce Store for AI Testing with TestNova.</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

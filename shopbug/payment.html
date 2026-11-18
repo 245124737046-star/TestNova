@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopBug - Secure Payment</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- HEADER / NAVIGATION -->
+    <header>
+        <a href="index.html" class="logo-link">
+            <h1>ShopBug</h1>
+            <span class="logo-badge">Store</span>
+        </a>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="login.html">Login</a>
+            <div class="cart-link-wrapper">
+                <a href="cart.html">
+                    Cart
+                    <span class="cart-badge" id="cartCount">0</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- STEP PROGRESS -->
+    <div class="checkout-steps">
+        <div class="step-item completed">
+            <span class="step-circle">✓</span>
+            <span>Cart</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step-item completed">
+            <span class="step-circle">✓</span>
+            <span>Shipping</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step-item active">
+            <span class="step-circle">3</span>
+            <span>Payment</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step-item">
+            <span class="step-circle">4</span>
+            <span>Success</span>
+        </div>
+    </div>
+
+    <main class="payment-page">
+        <div class="payment-heading">
+            <h2>Complete Your Order</h2>
+            <p>Select your payment method below to finalize your purchase.</p>
+        </div>
+
+        <div class="payment-layout">
+            <!-- PAYMENT METHODS CONTAINER -->
+            <section class="payment-container">
+                <h3>Select & Enter Payment Details</h3>
+
+                <form id="paymentForm">
+                    <!-- LEFT COLUMN: PAYMENT METHOD BUTTONS -->
+                    <div class="payment-options">
+                        <label class="payment-option selected" id="opt-upi">
+                            <input type="radio" name="payment" value="UPI" checked required>
+                            <span class="payment-icon">📱</span>
+                            <span>
+                                <strong>UPI Instant Pay</strong>
+                                <small>Google Pay, PhonePe, Paytm</small>
+                            </span>
+                        </label>
+
+                        <label class="payment-option" id="opt-card">
+                            <input type="radio" name="payment" value="Card">
+                            <span class="payment-icon">💳</span>
+                            <span>
+                                <strong>Credit / Debit Card</strong>
+                                <small>Visa, Mastercard, RuPay</small>
+                            </span>
+                        </label>
+
+                        <label class="payment-option" id="opt-cod">
+                            <input type="radio" name="payment" value="COD">
+                            <span class="payment-icon">💵</span>
+                            <span>
+                                <strong>Cash on Delivery (COD)</strong>
+                                <small>Pay upon package delivery</small>
+                            </span>
+                        </label>
+                    </div>
+
+                    <!-- RIGHT COLUMN: DETAILS PANEL (Directly beside options at eye-level) -->
+                    <div class="payment-details-panel">
+
+                        <!-- UPI SECTION (Active by default) -->
+                        <div id="upiSection" class="payment-details">
+                            <h3>UPI Payment Details</h3>
+
+                            <label for="upiApp">Choose your UPI app</label>
+                            <select id="upiApp">
+                                <option value="Google Pay">Google Pay</option>
+                                <option value="PhonePe">PhonePe</option>
+                                <option value="Paytm">Paytm</option>
+                                <option value="BHIM UPI">BHIM UPI</option>
+                            </select>
+
+                            <label for="upiId">Your Virtual UPI ID (optional)</label>
+                            <input
+                                type="text"
+                                id="upiId"
+                                placeholder="username@okaxis"
+                            >
+
+                            <button
+                                type="button"
+                                id="upiPayButton"
+                                class="pay-button"
+                            >
+                                Open UPI App
+                            </button>
+
+                            <p id="upiMessage" class="payment-message"></p>
+
+                            <button
+                                type="button"
+                                id="upiContinue"
+                                class="pay-button secondary-button"
+                                hidden
+                            >
+                                Continue Demo Order
+                            </button>
+                        </div>
+
+                        <!-- CARD SECTION -->
+                        <div id="cardSection" class="payment-details" hidden>
+                            <h3>Credit or Debit Card</h3>
+
+                            <label for="cardName">Cardholder Name</label>
+                            <input
+                                type="text"
+                                id="cardName"
+                                placeholder="Name as printed on card"
+                            >
+
+                            <label for="cardNumber">Card Number</label>
+                            <input
+                                type="text"
+                                id="cardNumber"
+                                inputmode="numeric"
+                                maxlength="19"
+                                placeholder="1234 5678 9012 3456"
+                            >
+
+                            <div class="card-row">
+                                <div>
+                                    <!-- INTENTIONAL BUG #7: Card expiry is not checked against current date; expired dates pass! -->
+                                    <label for="expiryDate">Expiry Date (MM/YY)</label>
+                                    <input type="month" id="expiryDate">
+                                </div>
+
+                                <div>
+                                    <label for="cvv">CVV / CVC</label>
+                                    <input
+                                        type="password"
+                                        id="cvv"
+                                        inputmode="numeric"
+                                        maxlength="4"
+                                        placeholder="3 or 4 digits"
+                                    >
+                                </div>
+                            </div>
+
+                            <button
+                                type="submit"
+                                id="cardPayButton"
+                                class="pay-button"
+                            >
+                                Pay Securely (Demo)
+                            </button>
+                        </div>
+
+                        <!-- COD SECTION -->
+                        <div id="codSection" class="payment-details" hidden>
+                            <h3>Cash on Delivery</h3>
+                            <p style="color: var(--text-muted); margin-bottom: 18px; line-height: 1.6;">
+                                No online payment needed now. You will pay cash or use QR code when your package is handed to you by our delivery courier.
+                            </p>
+
+                            <button
+                                type="submit"
+                                id="codButton"
+                                class="pay-button"
+                            >
+                                Confirm Cash on Delivery Order
+                            </button>
+                        </div>
+
+                        <p id="paymentMessage" class="payment-message"></p>
+                    </div>
+                </form>
+            </section>
+
+            <!-- ORDER SUMMARY -->
+            <aside class="order-summary">
+                <h3>Order Summary</h3>
+
+                <div class="summary-row">
+                    <span>Grand Total</span>
+                    <strong id="paymentTotal">₹0</strong>
+                </div>
+
+                <div class="summary-note">
+                    <p>🔒 Demo Mode Active</p>
+                    <small>ShopBug is an intentionally buggy test bed for TestNova. No real monetary transactions take place.</small>
+                </div>
+
+                <a href="cart.html" class="back-link">
+                    ← Return to Shopping Cart
+                </a>
+            </aside>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 ShopBug. Intentionally Buggy E-Commerce Store for AI Testing with TestNova.</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
