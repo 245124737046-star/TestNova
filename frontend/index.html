@@ -1,0 +1,2394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TestNova | Next-Gen AI Website Testing Platform</title>
+
+    <!-- Google Fonts & Bootstrap Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Libraries: Chart.js, Marked, DOMPurify -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+
+    <style>
+        :root {
+            --bg: #090d16;
+            --sidebar-bg: #0d1322;
+            --card-bg: #121a2d;
+            --card-hover: #162038;
+            --card-subtle: #0f1626;
+            --border: #1e293b;
+            --border-glow: #2d3f66;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --primary-glow: rgba(79, 70, 229, 0.25);
+            --accent: #06b6d4;
+            --green: #10b981;
+            --red: #ef4444;
+            --amber: #f59e0b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --text-dark: #64748b;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            line-height: 1.5;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(79, 70, 229, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(6, 182, 212, 0.06) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        /* LAYOUT */
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 260px;
+            flex: 0 0 260px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            padding: 24px 18px;
+            position: fixed;
+            inset: 0 auto 0 0;
+            height: 100vh;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 21px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            padding: 0 6px;
+            letter-spacing: -0.5px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo svg {
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+        }
+
+        .logo-badge {
+            background: rgba(79, 70, 229, 0.2);
+            color: #818cf8;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 2px;
+            border: 1px solid rgba(79, 70, 229, 0.3);
+        }
+
+        .menu-title {
+            color: var(--text-dark);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin: 18px 10px 8px;
+            text-transform: uppercase;
+        }
+
+        .nav-link {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            padding: 11px 14px;
+            margin-bottom: 5px;
+            border-radius: var(--radius-sm);
+            color: var(--text-muted);
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            transform: translateX(3px);
+        }
+
+        .nav-link.active {
+            background: linear-gradient(90deg, rgba(79, 70, 229, 0.18) 0%, rgba(79, 70, 229, 0.04) 100%);
+            color: #818cf8;
+            font-weight: 600;
+            border-left: 3px solid #6366f1;
+        }
+
+        .nav-pill {
+            margin-left: auto;
+            background: #1e293b;
+            color: #94a3b8;
+            font-size: 11px;
+            padding: 2px 7px;
+            border-radius: 12px;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .sidebar-bottom strong {
+            display: block;
+            color: var(--text-main);
+            margin-bottom: 2px;
+        }
+
+        /* MAIN WRAPPER */
+        .main {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* TOPBAR */
+        .topbar {
+            min-height: 70px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 35px;
+            background: rgba(13, 19, 34, 0.85);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 90;
+        }
+
+        .breadcrumb {
+            color: var(--text-muted);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb strong {
+            color: var(--text-main);
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 13px;
+        }
+
+        .online {
+            color: #10b981;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .online-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #10b981;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.85); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .quick-action-link {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .quick-action-link:hover {
+            color: white;
+            border-color: var(--primary);
+            background: rgba(79, 70, 229, 0.15);
+        }
+
+        .quick-action-link.highlight {
+            background: rgba(79, 70, 229, 0.2);
+            color: #a5b4fc;
+            border-color: rgba(79, 70, 229, 0.4);
+        }
+
+        /* CONTENT CONTAINER */
+        .content {
+            width: 100%;
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            flex: 1;
+        }
+
+        /* PANELS */
+        .panel {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .panel-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+            gap: 15px;
+        }
+
+        .panel-heading h2 {
+            font-size: 19px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-main);
+        }
+
+        .panel-heading p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        .section-icon {
+            color: #818cf8;
+        }
+
+        /* WORKSPACE BANNER */
+        .welcome {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.15) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border: 1px solid rgba(79, 70, 229, 0.25);
+            padding: 26px 30px;
+            border-radius: var(--radius-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome h1 {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .welcome p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .date-label {
+            color: #818cf8;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(79, 70, 229, 0.15);
+            padding: 8px 16px;
+            border-radius: 30px;
+            border: 1px solid rgba(79, 70, 229, 0.3);
+            white-space: nowrap;
+        }
+
+        /* STATS CARDS */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 22px;
+            border-radius: var(--radius-md);
+            min-width: 0;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s, border-color 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--border-glow);
+        }
+
+        .stat-card.stat-primary::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--primary); }
+        .stat-card.stat-pass::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--green); }
+        .stat-card.stat-fail::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--red); }
+        .stat-card.stat-pending::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--amber); }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 600;
+            align-items: center;
+        }
+
+        .stat-icon {
+            font-size: 18px;
+            color: #818cf8;
+            background: rgba(79, 70, 229, 0.15);
+            padding: 8px 10px;
+            border-radius: 8px;
+        }
+
+        .stat-icon.green { color: #34d399; background: rgba(16, 185, 129, 0.15); }
+        .stat-icon.red { color: #f87171; background: rgba(239, 68, 68, 0.15); }
+        .stat-icon.amber { color: #fbbf24; background: rgba(245, 158, 11, 0.15); }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 800;
+            margin-top: 14px;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+        }
+
+        .stat-note {
+            color: var(--text-dark);
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        /* STATUS BADGES */
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .status.pass {
+            color: #34d399;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .status.fail {
+            color: #f87171;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .status.info {
+            color: #67e8f9;
+            background: rgba(6, 182, 212, 0.15);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        /* FORM CONTROLS */
+        label {
+            display: block;
+            font-size: 13px;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        input[type="url"],
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 13px 16px;
+            border: 1px solid var(--border);
+            background: var(--card-subtle);
+            border-radius: var(--radius-sm);
+            color: var(--text-main);
+            outline: none;
+            font-family: inherit;
+            font-size: 14px;
+            margin-bottom: 18px;
+            transition: all 0.2s;
+        }
+
+        input[type="url"]:focus,
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: #6366f1;
+            background: rgba(22, 32, 56, 0.9);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .presets-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .preset-chip {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 5px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .preset-chip:hover {
+            border-color: #6366f1;
+            color: #c7d2fe;
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        /* BUTTONS */
+        .button-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn {
+            border: none;
+            padding: 11px 20px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            font-family: inherit;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-sm {
+            padding: 7px 13px;
+            font-size: 12px;
+            border-radius: 6px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+            color: white;
+            box-shadow: 0 4px 14px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            box-shadow: 0 6px 18px var(--primary-glow);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #1e293b;
+            color: #cbd5e1;
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: #27354f;
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            color: white;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        /* EXECUTION COMPLETE CALLOUT BANNER */
+        .execution-success-banner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.18) 0%, rgba(6, 182, 212, 0.08) 100%);
+            border: 2px solid #6366f1;
+            border-radius: var(--radius-md);
+            padding: 18px 24px;
+            margin-top: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .banner-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .banner-left i {
+            font-size: 26px;
+            color: #818cf8;
+        }
+
+        .banner-left h4 {
+            font-size: 15px;
+            color: white;
+            font-weight: 700;
+        }
+
+        .banner-left p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* TERMINAL WINDOW */
+        .terminal-window {
+            background: #090e18;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin-top: 18px;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .terminal-header {
+            background: #0f172a;
+            padding: 9px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #1e293b;
+            font-size: 12px;
+            color: var(--text-dark);
+        }
+
+        .terminal-dots { display: flex; gap: 6px; }
+        .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .terminal-dot.red { background: #ef4444; }
+        .terminal-dot.yellow { background: #f59e0b; }
+        .terminal-dot.green { background: #10b981; }
+
+        .result-box {
+            padding: 18px 20px;
+            min-height: 90px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            color: #cbd5e1;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .result-box:empty::before {
+            content: "Ready to run tests. Output logs will appear here...";
+            color: var(--text-dark);
+        }
+
+        .result-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-top: 24px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--text-main);
+        }
+
+        /* GENERATED AI CONTENT BOX */
+        .generated-content {
+            background: #090e18;
+            border: 1px solid var(--border);
+            padding: 24px;
+            border-radius: var(--radius-md);
+            margin-top: 14px;
+            color: #cbd5e1;
+            font-size: 13px;
+            line-height: 1.8;
+            overflow-x: auto;
+            overflow-wrap: anywhere;
+        }
+
+        .generated-content:empty::before {
+            content: "Generated test cases will appear here...";
+            color: var(--text-dark);
+        }
+
+        .generated-content table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .generated-content th,
+        .generated-content td {
+            border: 1px solid #1e293b;
+            padding: 12px 14px;
+            text-align: left;
+            vertical-align: top;
+            line-height: 1.6;
+        }
+
+        .generated-content th {
+            background: #17243c;
+            color: #e2e8f0;
+            font-weight: 700;
+        }
+
+        .generated-content tr:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
+
+        /* FORMATTED DIAGNOSTICS CARDS */
+        .analysis-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .analysis-content {
+            background: #090e18;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            color: #cbd5e1;
+            font-size: 14px;
+            line-height: 1.8;
+            min-height: 120px;
+        }
+
+        .failure-diagnostic-card {
+            background: var(--card-subtle);
+            border: 1px solid rgba(239, 68, 68, 0.35);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 18px;
+        }
+
+        .failure-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .failure-card-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #f8fafc;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .diff-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin: 14px 0;
+        }
+
+        .diff-box {
+            padding: 12px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+        }
+
+        .diff-box.expected {
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .diff-box.actual {
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .diff-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .diff-box.expected .diff-label { color: #34d399; }
+        .diff-box.actual .diff-label { color: #f87171; }
+
+        .diff-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: #f1f5f9;
+        }
+
+        .diagnosis-callout {
+            background: rgba(79, 70, 229, 0.08);
+            border: 1px solid rgba(79, 70, 229, 0.25);
+            border-radius: var(--radius-sm);
+            padding: 12px 14px;
+            margin-top: 12px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .diagnosis-callout strong {
+            color: #c7d2fe;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        /* FAILED TEST ANALYSIS TABLE STYLES */
+        .failed-table-wrap {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: var(--radius-md);
+            background: #090e18;
+            margin-top: 14px;
+        }
+
+        .failed-tests-table {
+            width: 100%;
+            min-width: 1050px;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .failed-tests-table th {
+            background: #141d33;
+            color: #e2e8f0;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: left;
+        }
+
+        .failed-tests-table td {
+            padding: 16px 18px;
+            border-bottom: 1px solid var(--border);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            vertical-align: top;
+            line-height: 1.6;
+        }
+
+        .failed-tests-table tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .col-num {
+            text-align: center;
+            font-weight: 800;
+            color: #818cf8;
+            font-size: 14px;
+            width: 45px;
+        }
+
+        .col-name {
+            font-weight: 700;
+            color: #ffffff;
+            width: 190px;
+        }
+
+        .col-status {
+            text-align: center;
+            width: 85px;
+        }
+
+        .col-severity {
+            text-align: center;
+            width: 105px;
+        }
+
+        .col-expected {
+            width: 200px;
+        }
+
+        .col-actual {
+            width: 220px;
+        }
+
+        .cell-diff-expected {
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #6ee7b7;
+            padding: 10px 12px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .cell-diff-actual {
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+            padding: 10px 12px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .severity-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .severity-critical {
+            background: rgba(239, 68, 68, 0.25);
+            color: #f87171;
+            border: 1px solid #ef4444;
+        }
+
+        .severity-high {
+            background: rgba(245, 158, 11, 0.25);
+            color: #fbbf24;
+            border: 1px solid #f59e0b;
+        }
+
+        .severity-medium {
+            background: rgba(6, 182, 212, 0.2);
+            color: #67e8f9;
+            border: 1px solid #06b6d4;
+        }
+
+        .solution-list {
+            margin: 0;
+            padding-left: 18px;
+            color: #cbd5e1;
+            font-size: 13px;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .solution-list li {
+            line-height: 1.55;
+        }
+
+        /* ANALYTICS SECTION */
+        .analytics-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+        }
+
+        .analytics-section[hidden] { display: none !important; }
+
+        .report-summary {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+            gap: 20px;
+            margin-top: 16px;
+        }
+
+        .report-chart-card {
+            background: var(--card-subtle);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 22px;
+        }
+
+        .report-chart-card h3 {
+            font-size: 15px;
+            color: var(--text-main);
+            margin-bottom: 16px;
+        }
+
+        .report-callout {
+            border: 1px solid rgba(99, 102, 241, 0.35);
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.15) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border-radius: var(--radius-md);
+            padding: 22px;
+        }
+
+        .report-callout h3 { font-size: 17px; margin-bottom: 8px; color: white; }
+        .report-callout p { color: #cbd5e1; font-size: 13px; line-height: 1.7; }
+
+        .report-table-wrap {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: var(--card-subtle);
+            margin-top: 14px;
+        }
+
+        .report-table {
+            width: 100%;
+            min-width: 720px;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .report-table th,
+        .report-table td {
+            padding: 13px 16px;
+            text-align: left;
+            vertical-align: top;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .report-table th {
+            background: #17243c;
+            color: #e2e8f0;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .report-feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 14px;
+            margin-top: 14px;
+        }
+
+        .report-feature {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            background: var(--card-subtle);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+        }
+
+        .report-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .report-status.pass { color: #34d399; background: rgba(16, 185, 129, 0.15); }
+        .report-status.fail { color: #f87171; background: rgba(239, 68, 68, 0.15); }
+        .report-status.error { color: #fbbf24; background: rgba(245, 158, 11, 0.15); }
+        .report-status.not-tested { color: #94a3b8; background: #1e293b; }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+            margin-top: 22px;
+        }
+
+        .analytics-card {
+            background: var(--card-subtle);
+            border: 1px solid var(--border);
+            padding: 22px;
+            border-radius: var(--radius-md);
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            color: var(--text-dark);
+            font-size: 12px;
+            padding: 24px 20px;
+            border-top: 1px solid var(--border);
+            background: var(--sidebar-bg);
+            margin-top: auto;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1150px) {
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .report-summary, .analytics-grid, .diff-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 850px) {
+            .sidebar { display: none; }
+            .main { margin-left: 0; width: 100%; }
+            .content { padding: 20px; gap: 24px; }
+            .topbar { padding: 0 20px; }
+            .welcome { flex-direction: column; align-items: flex-start; }
+            .panel { padding: 20px; }
+        }
+
+        @media (max-width: 550px) {
+            .stats { grid-template-columns: 1fr; }
+            .button-row { flex-direction: column; align-items: stretch; }
+            .button-row button { width: 100%; }
+        }
+
+        .test-cases-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: #111827;
+    color: #f9fafb;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.test-cases-table th {
+    background: #1e3a8a;
+    color: white;
+    padding: 15px;
+    text-align: left;
+}
+
+.test-cases-table td {
+    padding: 14px 15px;
+    border-bottom: 1px solid #374151;
+}
+
+.test-cases-table tr:hover {
+    background: #1f2937;
+}
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <!-- CUSTOM TESTNOVA LOGO -->
+        <a href="index.html" class="logo">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" rx="10" fill="url(#nova_logo_grad)"/>
+                <path d="M20 7L23.5 16.5L33 20L23.5 23.5L20 33L16.5 23.5L7 20L16.5 16.5L20 7Z" fill="white"/>
+                <circle cx="20" cy="20" r="3.5" fill="#06b6d4"/>
+                <path d="M14 26L18 30L26 21" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <defs>
+                    <linearGradient id="nova_logo_grad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#4f46e5"/>
+                        <stop offset="1" stop-color="#06b6d4"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+            <span>TestNova <span class="logo-badge">AI 2.0</span></span>
+        </a>
+
+        <div class="menu-title">WORKSPACE</div>
+
+        <a href="#generator" class="nav-link active">
+            <i class="bi bi-stars"></i> AI Test Generator
+            <span class="nav-pill">AI</span>
+        </a>
+
+        <a href="#dashboard" class="nav-link">
+            <i class="bi bi-grid-1x2"></i> Overview & Stats
+        </a>
+
+        <a href="#execution" class="nav-link">
+            <i class="bi bi-play-circle"></i> Test Runner
+            <span class="nav-pill">Playwright</span>
+        </a>
+
+        <a href="report.html" target="_blank" class="nav-link">
+            <i class="bi bi-file-earmark-bar-graph"></i> Audit Report Page
+            <i class="bi bi-box-arrow-up-right" style="margin-left: auto; font-size: 11px;"></i>
+        </a>
+
+        <div class="menu-title">TARGET PROJECT</div>
+
+        <a href="http://localhost:5000/shopbug/" target="_blank" rel="noopener" class="nav-link">
+            <i class="bi bi-shop"></i> ShopBug Website
+            <i class="bi bi-box-arrow-up-right" style="margin-left: auto; font-size: 11px;"></i>
+        </a>
+
+        <div class="sidebar-bottom">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                <i class="bi bi-shield-check" style="color: #34d399; font-size: 16px;"></i>
+                <strong>QA Automation Core</strong>
+            </div>
+            <span>Playwright Chromium + OpenRouter AI.</span>
+            <div style="font-size: 11px; color: var(--text-dark); margin-top: 8px;">Version 2.0.0</div>
+        </div>
+    </aside>
+
+    <!-- MAIN WRAPPER -->
+    <main class="main">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+            <div class="breadcrumb">
+                <span>Workspace</span>
+                <i class="bi bi-chevron-right" style="font-size: 10px;"></i>
+                <strong>Dashboard & AI Testing</strong>
+            </div>
+
+            <div class="top-right">
+                <a href="report.html" target="_blank" class="quick-action-link highlight">
+                    <i class="bi bi-file-earmark-bar-graph"></i> View Standalone Report
+                </a>
+
+                <a href="http://localhost:5000/shopbug/" target="_blank" class="quick-action-link">
+                    <i class="bi bi-arrow-up-right-circle"></i> Target: ShopBug
+                </a>
+
+                <div class="online">
+                    <span class="online-dot"></span>
+                    Engine Online
+                </div>
+            </div>
+        </header>
+
+        <div class="content" id="dashboard">
+
+            <!-- ======================================================== -->
+            <!-- 1. AI TEST GENERATOR (AT THE VERY TOP) -->
+            <!-- ======================================================== -->
+            <section class="panel" id="generator">
+                <div class="panel-heading">
+                    <div>
+                        <h2>
+                            <i class="bi bi-stars section-icon"></i>
+                            AI Test Scenario Generator
+                        </h2>
+                        <p>Generate intelligent e-commerce test suites using AI before running automated browser tests.</p>
+                    </div>
+                    <span class="status info">OpenRouter AI</span>
+                </div>
+
+                <label for="websiteUrl">Target Website URL</label>
+                <input
+                    type="url"
+                    id="websiteUrl"
+                    value="http://localhost:5000/shopbug/"
+                    placeholder="Enter target website URL"
+                >
+
+                <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <label for="sourceCode" style="margin-bottom: 0;">Feature Requirements / Specification</label>
+                    <span style="font-size: 12px; color: var(--text-dark);">Click a preset to prefill:</span>
+                </div>
+
+                <!-- PRESET CHIPS -->
+                <div class="presets-row">
+                    <button type="button" class="preset-chip" onclick="applyPreset('checkout')">
+                        <i class="bi bi-cart"></i> Checkout & Payment Flow
+                    </button>
+                    <button type="button" class="preset-chip" onclick="applyPreset('auth')">
+                        <i class="bi bi-shield-lock"></i> User Login & Auth
+                    </button>
+                    <button type="button" class="preset-chip" onclick="applyPreset('search')">
+                        <i class="bi bi-search"></i> Product Search & Filters
+                    </button>
+                    <button type="button" class="preset-chip" onclick="applyPreset('cart')">
+                        <i class="bi bi-bag"></i> Cart & Coupon Math
+                    </button>
+                </div>
+
+                <textarea
+                    id="sourceCode"
+                    placeholder="Describe user stories, website source code, or click one of the quick presets above..."
+                ></textarea>
+
+                <div class="button-row">
+                    <button class="btn btn-primary" id="generateBtn" onclick="generateTests()">
+    Generate Test Cases
+</button>
+
+                    <button class="btn btn-secondary" onclick="clearGenerator()">
+                        <i class="bi bi-arrow-counterclockwise"></i> Clear
+                    </button>
+                </div>
+
+                <div id="generatedTestCasesOutput" style="margin-top: 20px;"></div>
+
+                <p class="hint" style="color: var(--text-dark); font-size: 12px; margin-top: 14px;">
+                    💡 Test cases will be formatted as a structured markdown table with priorities, assertions, and execution steps.
+                </p>
+
+                <div class="result-title">
+                    <span>Generated Test Specifications</span>
+                </div>
+
+                <div class="generated-content" id="aiOutput" aria-live="polite"></div>
+            </section>
+
+
+            <!-- ======================================================== -->
+            <!-- 2. THAT FIRST SECTION (PASTED AFTER AI GENERATOR) -->
+            <!-- Workspace Banner + Session Statistics Cards -->
+            <!-- ======================================================== -->
+            <section class="welcome">
+                <div>
+                    <h1>Autonomous Website Testing Workspace</h1>
+                    <p>Execute Playwright browser tests against ShopBug and inspect automated AI root-cause diagnostics.</p>
+                </div>
+                <div class="date-label">
+                    <i class="bi bi-lightning-charge-fill"></i>
+                    AI Core Active
+                </div>
+            </section>
+
+            <!-- STATS CARDS -->
+            
+
+            <!-- ======================================================== -->
+            <!-- 3. PLAYWRIGHT AUTOMATED EXECUTION -->
+            <!-- ======================================================== -->
+            <section class="panel" id="execution">
+                <div class="panel-heading">
+                    <div>
+                        <h2>
+                            <i class="bi bi-play-circle section-icon"></i>
+                            Playwright Browser Test Runner
+                        </h2>
+                        <p>Execute live headless Chromium browser automation directly against ShopBug.</p>
+                    </div>
+                    <span class="status pass">Chromium Ready</span>
+                </div>
+
+                <label for="targetWebsite">Target Application</label>
+                <input
+                    type="text"
+                    id="targetWebsite"
+                    value="ShopBug - E-commerce Demo (http://localhost:5000/shopbug/)"
+                    readonly
+                >
+
+                <div class="button-row">
+                    <button class="btn btn-primary" id="loginTestBtn" onclick="runLoginTest()">
+                        <i class="bi bi-lock-fill"></i> Run Login Test
+                    </button>
+                    <button class="btn btn-secondary" id="cartTestBtn" onclick="runCartTest()">
+                        <i class="bi bi-cart-check"></i> Run Cart Test
+                    </button>
+                    <button class="btn btn-success" id="runAllTestsBtn" onclick="runAllTests()">
+                        <i class="bi bi-play-circle-fill"></i> Run All Tests (Suite)
+                    </button>
+                    <button class="btn btn-secondary" onclick="clearExecution()">
+                        <i class="bi bi-trash"></i> Clear Console
+                    </button>
+                </div>
+
+                <!-- DYNAMIC CALLOUT BANNER (Appears after tests finish) -->
+                <div id="executionBanner" class="execution-success-banner" style="display: none;">
+                    <div class="banner-left">
+                        <i class="bi bi-check-circle-fill" style="color: #10b981;"></i>
+                        <div>
+                            <h4>Test Suite Execution Completed!</h4>
+                            <p id="bannerSubtitle">Automated assertions and AI failure diagnostics are ready for review.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="report.html" target="_blank" class="btn btn-primary">
+                            <i class="bi bi-file-earmark-bar-graph"></i> Open Full Report in New Page →
+                        </a>
+                    </div>
+                </div>
+
+                <div class="result-title">
+                    <span>Runner Execution Logs</span>
+                </div>
+
+                <div class="terminal-window">
+                    <div class="terminal-header">
+                        <div class="terminal-dots">
+                            <span class="terminal-dot red"></span>
+                            <span class="terminal-dot yellow"></span>
+                            <span class="terminal-dot green"></span>
+                        </div>
+                        <span>Console Terminal — Playwright v1.x</span>
+                        <span>STDOUT</span>
+                    </div>
+                    <div class="result-box" id="executionOutput"></div>
+                </div>
+            </section>
+
+
+<!-- TEST STATISTICS - AFTER EXECUTION -->
+<section class="stats" aria-label="Test statistics">
+
+    <div class="stat-card stat-primary">
+        <div class="stat-top">
+            <span>Total Tests</span>
+            <span class="stat-icon"><i class="bi bi-list-check"></i></span>
+        </div>
+        <div class="stat-number" id="totalTests">0</div>
+        <div class="stat-note">Total executed tests</div>
+    </div>
+
+    <div class="stat-card stat-pass">
+        <div class="stat-top">
+            <span>Passed</span>
+            <span class="stat-icon green"><i class="bi bi-check-circle-fill"></i></span>
+        </div>
+        <div class="stat-number" id="passedTests" style="color: #34d399;">0</div>
+        <div class="stat-note">Assertions passed successfully</div>
+    </div>
+
+    <div class="stat-card stat-fail">
+        <div class="stat-top">
+            <span>Failed / Bugs</span>
+            <span class="stat-icon red"><i class="bi bi-bug-fill"></i></span>
+        </div>
+        <div class="stat-number" id="failedTests" style="color: #f87171;">0</div>
+        <div class="stat-note">Defects detected</div>
+    </div>
+
+    <div class="stat-card stat-pending">
+        <div class="stat-top">
+            <span>Execution Errors</span>
+            <span class="stat-icon amber"><i class="bi bi-exclamation-triangle-fill"></i></span>
+        </div>
+        <div class="stat-number" id="pendingTests" style="color: #fbbf24;">0</div>
+        <div class="stat-note">Tests that could not execute</div>
+    </div>
+
+</section>
+
+
+
+            <!-- ======================================================== -->
+            <!-- 4. OPENROUTER LLM SYNTHESIS & EVIDENCE ANALYSIS TABLE     -->
+            <!-- ======================================================== -->
+            <section class="panel" id="results">
+                <div class="panel-heading">
+                    <div>
+                        <h2>
+                            <i class="bi bi-stars section-icon"></i>
+                            OpenRouter LLM Synthesis & Evidence Analysis: Failed Test Analysis
+                        </h2>
+                        <p>Structured table of failed assertions, root causes, severity metrics, and recommended remediation steps.</p>
+                    </div>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="downloadFailedAnalysisCSV()" title="Download CSV spreadsheet">
+                            <i class="bi bi-filetype-csv"></i> Download CSV
+                        </button>
+                        <a href="report.html" target="_blank" class="btn btn-primary btn-sm" title="Open complete report page with charts & print to PDF">
+                            <i class="bi bi-download"></i> Download Report (PDF)
+                        </a>
+                    </div>
+                </div>
+
+                <div class="analysis-top-bar">
+                    <span style="font-size: 13px; color: var(--text-muted);">
+                        <i class="bi bi-cpu-fill" style="color: #818cf8;"></i> OpenRouter LLM Synthesis Engine
+                    </span>
+
+                    <div style="display: flex; gap: 8px;">
+                        <button type="button" class="btn btn-secondary btn-sm" id="copyAnalysisBtn" onclick="copyAnalysisTable()">
+                            <i class="bi bi-clipboard"></i> Copy Table
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="downloadFailedAnalysisCSV()">
+                            <i class="bi bi-filetype-csv"></i> Export CSV
+                        </button>
+                    </div>
+                </div>
+
+                <div id="analysisOutput" class="analysis-content" aria-live="polite">
+                    No test execution recorded yet. Run a test suite above to inspect AI diagnostics.
+                </div>
+            </section>
+
+
+            <!-- ======================================================== -->
+            <!-- 5. TEST ANALYTICS & EXECUTION REPORT (Visual Charts) -->
+            <!-- ======================================================== -->
+            <section class="analytics-section" id="analyticsSection" hidden>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="margin-bottom: 0;">
+                        <i class="bi bi-graph-up-arrow section-icon"></i>
+                        Session Test Execution Report
+                    </h2>
+                    <a href="report.html" target="_blank" class="btn btn-primary btn-sm">
+                        <i class="bi bi-printer"></i> Print / Download PDF
+                    </a>
+                </div>
+
+                <div class="report-summary">
+                    <div class="report-chart-card">
+                        <h3><i class="bi bi-pie-chart section-icon"></i> Test Result Distribution</h3>
+                        <canvas id="testPieChart"></canvas>
+                    </div>
+
+                    <div class="report-callout" id="overallReportCallout" aria-live="polite">
+                        <h3><i class="bi bi-clipboard-check"></i> Overall Result</h3>
+                        <p>Your test execution summary will appear here after the tests finish.</p>
+                    </div>
+                </div>
+
+                <h3 class="report-section-title" style="margin-top: 24px; margin-bottom: 12px; font-size: 16px;">Detailed Test Case Results</h3>
+                <div class="report-table-wrap">
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Test Case</th>
+                                <th>Expected Result</th>
+                                <th>Actual Result</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="executionResultsBody">
+                            <tr><td colspan="5" style="text-align: center; color: var(--text-dark); padding: 20px;">No tests have been executed yet.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="report-section-title" style="margin-top: 24px; margin-bottom: 12px; font-size: 16px;">Feature-wise Coverage Status</h3>
+                <div class="report-feature-grid" id="featureOverview">
+                    <div class="report-feature"><span>Login</span><span class="report-status not-tested">Not tested</span></div>
+                    <div class="report-feature"><span>Product Search</span><span class="report-status not-tested">Not tested</span></div>
+                    <div class="report-feature"><span>Shopping Cart</span><span class="report-status not-tested">Not tested</span></div>
+                    <div class="report-feature"><span>Checkout</span><span class="report-status not-tested">Not tested</span></div>
+                    <div class="report-feature"><span>Payment</span><span class="report-status not-tested">Not tested</span></div>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <h3 style="font-size: 15px; margin-bottom: 16px; color: var(--text-main);">Feature-wise Breakdown</h3>
+                        <canvas id="featureBarChart"></canvas>
+                    </div>
+                    <div class="analytics-card">
+                        <h3 style="font-size: 15px; margin-bottom: 16px; color: var(--text-main);">Summary & Guidelines</h3>
+                        <p style="color: var(--text-muted); font-size: 13px; line-height: 1.8;">
+                            <strong style="color: #34d399;">PASS:</strong> Website behavior matched expected assertions.<br>
+                            <strong style="color: #f87171;">FAIL:</strong> Intentional bug or defect detected by Playwright assertions.<br>
+                            <strong style="color: #fbbf24;">ERROR:</strong> Execution halted due to network access or timeout.<br>
+                            <strong style="color: #94a3b8;">NOT TESTED:</strong> Feature omitted from the current test suite.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            © 2026 TestNova AI Testing Platform • Powered by Playwright Automation & DeepSeek AI
+        </footer>
+
+    </main>
+
+</div>
+
+<script>
+    // PRESET SCENARIO TEMPLATES
+    function applyPreset(type) {
+        const area = document.getElementById("sourceCode");
+        if (type === 'checkout') {
+            area.value = "ShopBug Checkout Flow:\n1. User views cart subtotal and shipping cost.\n2. User enters full name, address, and phone number.\n3. User submits checkout and chooses payment (UPI, Card, COD).\nVerify that empty cart checkout is blocked, valid phone numbers are required, and order summary is accurate.";
+        } else if (type === 'auth') {
+            area.value = "ShopBug Authentication:\n1. User enters email address and password on login.html.\n2. When valid credentials are provided, user is granted access.\n3. When invalid credentials (wrong email/password) are submitted, an error 'Invalid email or password' must be shown.";
+        } else if (type === 'search') {
+            area.value = "ShopBug Product Catalog & Search:\n1. User enters keywords in search bar and clicks Search.\n2. Case-insensitive search should match products (e.g. 'headphones' matches 'Wireless Headphones').\n3. Category tabs filter products accurately.";
+        } else if (type === 'cart') {
+            area.value = "ShopBug Shopping Cart & Discounts:\n1. User clicks Add to Cart on product cards.\n2. Cart correctly increments item quantity without negative numbers.\n3. Promo code SAVE500 should only apply once per order.";
+        }
+    }
+
+    
+// SESSION STATISTICS
+let testPieChart = null;
+let featureBarChart = null;
+
+let total = 0;
+let passed = 0;
+let failed = 0;
+let errors = 0;
+
+function updateStats() {
+    document.getElementById("totalTests").textContent = total;
+    document.getElementById("passedTests").textContent = passed;
+    document.getElementById("failedTests").textContent = failed;
+    document.getElementById("pendingTests").textContent = errors;
+}
+
+
+    // UPDATE CHARTS
+    function updateCharts(report) {
+        const summary = report.summary || {};
+        const results = report.results || [];
+
+        if (testPieChart) {
+            testPieChart.destroy();
+            testPieChart = null;
+        }
+
+        if (featureBarChart) {
+            featureBarChart.destroy();
+            featureBarChart = null;
+        }
+
+        const pieCanvas = document.getElementById("testPieChart");
+        if (pieCanvas) {
+            const pieContext = pieCanvas.getContext("2d");
+            testPieChart = new Chart(pieContext, {
+                type: "doughnut",
+                data: {
+                    labels: ["Passed", "Failed", "Errors"],
+                    datasets: [{
+                        data: [summary.passed || 0, summary.failed || 0, summary.errors || 0],
+                        backgroundColor: ["#10b981", "#ef4444", "#f59e0b"],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                            labels: {
+                                color: "#94a3b8",
+                                padding: 16,
+                                font: { family: "'Plus Jakarta Sans', sans-serif", size: 12 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        const features = {
+            Login: { passed: 0, failed: 0 },
+            Cart: { passed: 0, failed: 0 },
+            Other: { passed: 0, failed: 0 }
+        };
+
+        results.forEach(test => {
+            const name = (test.testName || "").toLowerCase();
+            let feature = "Other";
+
+            if (name.includes("login")) feature = "Login";
+            else if (name.includes("cart")) feature = "Cart";
+
+            if (test.status === "PASS") features[feature].passed++;
+            else features[feature].failed++;
+        });
+
+        const barCanvas = document.getElementById("featureBarChart");
+        if (barCanvas) {
+            const barContext = barCanvas.getContext("2d");
+            featureBarChart = new Chart(barContext, {
+                type: "bar",
+                data: {
+                    labels: Object.keys(features),
+                    datasets: [
+                        {
+                            label: "Passed",
+                            data: Object.values(features).map(item => item.passed),
+                            backgroundColor: "#10b981",
+                            borderRadius: 6
+                        },
+                        {
+                            label: "Failed / Errors",
+                            data: Object.values(features).map(item => item.failed),
+                            backgroundColor: "#ef4444",
+                            borderRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        x: { ticks: { color: "#94a3b8" }, grid: { display: false } },
+                        y: { beginAtZero: true, ticks: { color: "#94a3b8", stepSize: 1 }, grid: { color: "#1e293b" } }
+                    },
+                    plugins: {
+                        legend: { labels: { color: "#94a3b8" } }
+                    }
+                }
+            });
+        }
+    }
+
+    // AI TEST CASE GENERATION
+    
+       
+let generatedTestCases = [];
+
+
+async function generateTests() {
+    const url = document.getElementById("websiteUrl").value.trim();
+    const sourceCode = document.getElementById("sourceCode").value.trim();
+
+    const generateBtn = document.getElementById("generateBtn");
+    const output = document.getElementById("generatedTestCasesOutput");
+
+    if (!url) {
+        alert("Please enter a website URL.");
+        return;
+    }
+
+    generateBtn.disabled = true;
+    generateBtn.textContent = "Generating...";
+    output.innerHTML = "<p>Generating test cases. Please wait...</p>";
+
+    try {
+        const response = await fetch("/api/ai/generate-test-cases", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url, sourceCode })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.error || "Test case generation failed.");
+        }
+
+        generatedTestCases = data.testCases;
+
+        if (!Array.isArray(generatedTestCases) || generatedTestCases.length === 0) {
+            throw new Error("No test cases were generated.");
+        }
+
+        const escapeHTML = value =>
+            String(value ?? "").replace(/[&<>"']/g, char => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            })[char]);
+
+        output.innerHTML = `
+            <h3 style="margin-bottom:15px; color:#60a5fa;">
+                Generated Test Cases (${generatedTestCases.length})
+            </h3>
+
+            <div style="width:100%; overflow-x:auto;">
+                <table style="
+                    width:100%;
+                    border-collapse:collapse;
+                    color:#e2e8f0;
+                    background:#1e293b;
+                    text-align:left;
+                ">
+                    <thead>
+                        <tr style="background:#1d4ed8;">
+                            <th style="padding:12px;">#</th>
+                            <th style="padding:12px;">Test Case ID</th>
+                            <th style="padding:12px;">Test Scenario</th>
+                            <th style="padding:12px;">Test Steps</th>
+                            <th style="padding:12px;">Expected Result</th>
+                            <th style="padding:12px;">Priority</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${generatedTestCases.map((test, index) => `
+                            <tr style="border-bottom:1px solid #475569;">
+                                <td style="padding:12px;">${index + 1}</td>
+                                <td style="padding:12px;">
+                                    ${escapeHTML(test.testCaseId || test.id || `TC_${String(index + 1).padStart(3, "0")}`)}
+                                </td>
+                                <td style="padding:12px;">
+                                    ${escapeHTML(test.testName || test.testScenario || test.name || test.title || "N/A")}
+                                </td>
+                                <td style="padding:12px;">
+                                    ${escapeHTML(
+    (test.testSteps || test.steps || [])
+        .map(step => typeof step === "object"
+            ? step.description || step.action || step.step || JSON.stringify(step)
+            : step
+        )
+        .join(" → ")
+)}
+                                </td>
+                                <td style="padding:12px;">
+${escapeHTML(
+    test.expectedResult ||
+    test.expected ||
+    test.expected_result ||
+    test.expectedOutcome ||
+    "N/A"
+)}
+                                </td>
+                                <td style="padding:12px;">
+                                    ${escapeHTML(test.priority || "Medium")}
+                                </td>
+                            </tr>
+                        `).join("")}
+                    </tbody>
+                </table>
+            </div>
+        `;
+
+        console.log("Generated Test Cases:", generatedTestCases);
+
+        console.log("FIRST TEST CASE:", JSON.stringify(generatedTestCases[0], null, 2));
+
+    } catch (error) {
+        console.error("Generation Error:", error);
+        output.innerHTML = `<p style="color:#f87171;">${escapeHTML(error.message)}</p>`;
+    } finally {
+        generateBtn.disabled = false;
+        generateBtn.textContent = "Generate Test Cases";
+    }
+}
+
+    
+
+    // RENDER FORMATTED DIAGNOSTIC CARD
+    function renderDiagnosticCard(result) {
+        const isPass = result.status === "PASS";
+        const statusBadge = isPass 
+            ? '<span class="status pass"><i class="bi bi-check-circle"></i> PASS</span>' 
+            : '<span class="status fail"><i class="bi bi-bug"></i> DEFECT FOUND</span>';
+
+        let rootCause = "Assertion mismatch between expected contract and actual DOM output.";
+        if (result.testName && result.testName.toLowerCase().includes("login")) {
+            rootCause = "Authentication defect: ShopBug bypassed credential validation and returned a success state for invalid username/password. Password hash verification was skipped.";
+        } else if (result.testName && result.testName.toLowerCase().includes("cart")) {
+            rootCause = isPass 
+                ? "Cart assertion passed: Wireless Headphones added to localStorage with unit price ₹1499 and quantity 1." 
+                : "Cart defect: Product price or quantity mismatch in browser storage.";
+        }
+
+        return `
+            <div class="failure-diagnostic-card" style="border-color: ${isPass ? 'rgba(16,185,129,0.3)' : 'rgba(239,68,68,0.35)'};">
+                <div class="failure-card-header">
+                    <div class="failure-card-title">
+                        <i class="bi ${isPass ? 'bi-check-circle-fill' : 'bi-exclamation-octagon-fill'}" style="color: ${isPass ? '#34d399' : '#f87171'};"></i>
+                        <span>${escapeReportText(result.testName || "Test Case")}</span>
+                    </div>
+                    ${statusBadge}
+                </div>
+
+                <div class="diff-grid">
+                    <div class="diff-box expected">
+                        <div class="diff-label"><i class="bi bi-check2"></i> Expected Result Contract</div>
+                        <div class="diff-val">${escapeReportText(result.expected || "Not provided")}</div>
+                    </div>
+
+                    <div class="diff-box actual">
+                        <div class="diff-label"><i class="bi bi-x-circle"></i> Actual Browser State</div>
+                        <div class="diff-val">${escapeReportText(result.actual || "No output")}</div>
+                    </div>
+                </div>
+
+                <div class="diagnosis-callout" style="background: ${isPass ? 'rgba(16,185,129,0.08)' : 'rgba(239,68,68,0.08)'}; border-color: ${isPass ? 'rgba(16,185,129,0.25)' : 'rgba(239,68,68,0.25)'};">
+                    <strong style="color: ${isPass ? '#a7f3d0' : '#fca5a5'};">
+                        <i class="bi bi-info-circle-fill"></i> ${isPass ? 'Assertion Succeeded' : 'Root-Cause Diagnosis'}:
+                    </strong>
+                    <span>${rootCause}</span>
+                </div>
+            </div>
+        `;
+    }
+
+    let lastFailedRows = [];
+
+    // RENDER FAILED TEST ANALYSIS AS A PARTICULAR TABLE (OpenRouter LLM Synthesis)
+    function renderFailedAnalysisTableHtml(results, rawAiAnalysis) {
+        const failedTests = (results || []).filter(t => t.status === "FAIL" || t.bugDetected === true);
+
+        if (!failedTests.length) {
+            lastFailedRows = [];
+            return `
+                <div style="text-align: center; padding: 32px; color: #10b981;">
+                    <i class="bi bi-shield-fill-check" style="font-size: 38px; display: block; margin-bottom: 8px;"></i>
+                    <strong style="font-size: 15px; color: white;">All Test Assertions Passed!</strong>
+                    <p style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">No defects or intentional bugs detected in this test run.</p>
+                </div>
+            `;
+        }
+
+        lastFailedRows = [];
+        let rowsHtml = "";
+
+        failedTests.forEach((test, idx) => {
+            const num = idx + 1;
+            const testName = test.testName || "Failed Test Case";
+            const status = "FAIL";
+            let expected = test.expected || "“Invalid email or password”";
+            let actual = test.actual || "“Login successful! Welcome to ShopBug.”";
+            let severity = "Critical";
+            let solutions = [
+                "Verify the authentication logic that compares the supplied email/password with the stored user credentials.",
+                "Ensure the validation step runs before any session‑creation code.",
+                "Add a unit test that explicitly supplies a wrong email/password pair and asserts that the response contains the expected error message (and that no session/token is issued).",
+                "Review the login flow for any early‑exit or bypass paths (e.g., default‑admin accounts, “remember me” shortcuts, missing password hash verification).",
+                "Conduct an end‑to‑end regression test after the fix to confirm that invalid credentials are rejected and a valid credential still logs the user in."
+            ];
+
+            if (!testName.toLowerCase().includes("login")) {
+                severity = "High";
+                solutions = [
+                    "Inspect the relevant handler in script.js and implement proper validation checks.",
+                    "Verify input parameters and sanitize before mutating application state.",
+                    "Add regression assertions confirming that invalid user interactions are gracefully rejected."
+                ];
+            }
+
+            if (rawAiAnalysis && typeof rawAiAnalysis === "string") {
+                const aiLines = rawAiAnalysis.split("\n");
+                const foundSteps = [];
+                aiLines.forEach(l => {
+                    const trimmed = l.trim();
+                    if (/^\d+\.\s+/.test(trimmed)) {
+                        foundSteps.push(trimmed.replace(/^\d+\.\s+/, ""));
+                    }
+                });
+                if (foundSteps.length >= 3 && testName.toLowerCase().includes("login")) {
+                    solutions = foundSteps.slice(0, 5);
+                }
+            }
+
+            lastFailedRows.push({
+                num,
+                testName,
+                status,
+                expected,
+                actual,
+                severity,
+                solutions
+            });
+
+            const solutionItems = solutions.map(s => `<li>${escapeReportText(s)}</li>`).join("");
+
+            rowsHtml += `
+                <tr>
+                    <td class="col-num">${num}</td>
+                    <td class="col-name">
+                        <i class="bi bi-bug-fill" style="color: #ef4444; margin-right: 6px;"></i>
+                        ${escapeReportText(testName)}
+                    </td>
+                    <td class="col-status">
+                        <span class="status-badge fail">FAIL</span>
+                    </td>
+                    <td class="col-expected">
+                        <div class="cell-diff-expected">
+                            <i class="bi bi-check-circle" style="margin-right: 4px;"></i>
+                            ${escapeReportText(expected)}
+                        </div>
+                    </td>
+                    <td class="col-actual">
+                        <div class="cell-diff-actual">
+                            <i class="bi bi-x-circle" style="margin-right: 4px;"></i>
+                            ${escapeReportText(actual)}
+                        </div>
+                    </td>
+                    <td class="col-severity">
+                        <span class="severity-badge severity-${severity.toLowerCase()}">${severity}</span>
+                    </td>
+                    <td>
+                        <ol class="solution-list">
+                            ${solutionItems}
+                        </ol>
+                    </td>
+                </tr>
+            `;
+        });
+
+        return `
+            <div class="failed-table-wrap">
+                <table class="failed-tests-table">
+                    <thead>
+                        <tr>
+                            <th class="col-num">#</th>
+                            <th class="col-name">Test case name</th>
+                            <th class="col-status">Status</th>
+                            <th class="col-expected">Expected result</th>
+                            <th class="col-actual">Actual result</th>
+                            <th class="col-severity">Severity</th>
+                            <th>Recommended solution</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rowsHtml}
+                    </tbody>
+                </table>
+            </div>
+        `;
+    }
+
+    // PLAYWRIGHT LOGIN TEST
+    async function runLoginTest() {
+        const output = document.getElementById("executionOutput");
+        const analysis = document.getElementById("analysisOutput");
+        const button = document.getElementById("loginTestBtn");
+
+        button.disabled = true;
+        button.innerHTML = '<i class="bi bi-hourglass-split"></i> Executing...';
+        output.textContent = "Launching Playwright Chromium browser...\nNavigating to http://localhost:5000/shopbug/login.html\nSubmitting incorrect login credentials...";
+
+        try {
+            const response = await fetch("/api/ai/run-login-test");
+            const data = await response.json();
+
+            if (!response.ok || !data.success) throw new Error(data.message || data.error || "Test failed.");
+
+            const result = data.result;
+            total++;
+            if (result.status === "PASS") passed++;
+            else if (result.status === "FAIL") failed++;
+
+            updateStats();
+            output.textContent = JSON.stringify(result, null, 2);
+            analysis.innerHTML = renderFailedAnalysisTableHtml([result], "");
+
+            // Update localStorage for report page
+            localStorage.setItem("testnova_last_report", JSON.stringify({
+                report: { summary: { total, passed, failed, errors: 0 }, results: [result] },
+                aiAnalysis: result.bugDetected ? "Login authentication defect detected." : ""
+            }));
+
+        } catch (error) {
+            output.textContent = "Execution Error: " + error.message;
+            analysis.textContent = "Test execution could not be completed. Make sure TestNova server is running.";
+        } finally {
+            button.disabled = false;
+            button.innerHTML = '<i class="bi bi-lock-fill"></i> Run Login Test';
+        }
+    }
+
+    // PLAYWRIGHT CART TEST
+    async function runCartTest() {
+        const output = document.getElementById("executionOutput");
+        const analysis = document.getElementById("analysisOutput");
+        const button = document.getElementById("cartTestBtn");
+
+        button.disabled = true;
+        button.innerHTML = '<i class="bi bi-hourglass-split"></i> Executing...';
+        output.textContent = "Launching Playwright Chromium browser...\nNavigating to http://localhost:5000/shopbug/\nSelecting 'Wireless Headphones' and clicking 'Add to Cart'...";
+
+        try {
+            const response = await fetch("/api/ai/run-cart-test");
+            const data = await response.json();
+
+            if (!response.ok || !data.success) throw new Error(data.message || data.error || "Cart test failed.");
+
+            const result = data.result;
+            total++;
+            if (result.status === "PASS") passed++;
+            else if (result.status === "FAIL") failed++;
+
+            updateStats();
+            output.textContent = JSON.stringify(result, null, 2);
+            analysis.innerHTML = renderFailedAnalysisTableHtml([result], "");
+
+            // Update localStorage for report page
+            localStorage.setItem("testnova_last_report", JSON.stringify({
+                report: { summary: { total, passed, failed, errors: 0 }, results: [result] },
+                aiAnalysis: ""
+            }));
+
+        } catch (error) {
+            output.textContent = "Execution Error: " + error.message;
+            analysis.textContent = "Cart test execution could not be completed.";
+        } finally {
+            button.disabled = false;
+            button.innerHTML = '<i class="bi bi-cart-check"></i> Run Cart Test';
+        }
+    }
+
+    // RUN ALL TESTS (FULL SUITE & LAUNCH REPORT)
+    async function runAllTests() {
+        const button = document.getElementById("runAllTestsBtn");
+        const output = document.getElementById("executionOutput");
+        const analysis = document.getElementById("analysisOutput");
+        const reportSection = document.getElementById("analyticsSection");
+        const banner = document.getElementById("executionBanner");
+
+        button.disabled = true;
+        button.innerHTML = '<i class="bi bi-hourglass-split"></i> Running Full Suite...';
+        output.textContent = "Executing Playwright automated test suite against ShopBug...\nRunning: Login Test\nRunning: Add to Cart Test\nCollecting diagnostics...";
+        if (banner) banner.style.display = "none";
+        reportSection.hidden = true;
+
+        try {
+            const response = await fetch("/api/ai/run-all-tests");
+            const data = await response.json();
+
+            if (!response.ok || !data.success || !data.report) throw new Error(data.message || "Test execution failed");
+
+            const summary = data.report.summary || {};
+            const results = Array.isArray(data.report.results) ? data.report.results : [];
+
+total = Number(summary.total) || results.length;
+passed = Number(summary.passed) || 0;
+failed = Number(summary.failed) || 0;
+errors = Number(summary.errors) || 0;
+
+updateStats();
+
+            // Store in localStorage for the separate report page
+            localStorage.setItem("testnova_last_report", JSON.stringify(data));
+
+            // Show execution report sections
+            reportSection.hidden = false;
+            updateCharts(data.report);
+            renderExecutionReport(data.report);
+
+           output.textContent =
+    `Test execution completed.\n\n` +
+    `Total Tests: ${total}\n` +
+    `Passed: ${passed}\n` +
+    `Failed / Bugs: ${failed}\n` +
+    `Execution Errors: ${errors}\n\n` +
+    `Please review the Test Results and AI Failure Analysis sections below.`;
+
+            // Render structured Failed Test Analysis Table
+            analysis.innerHTML = renderFailedAnalysisTableHtml(results, data.aiAnalysis);
+
+            // Show execution completion banner
+            if (banner) {
+                banner.style.display = "flex";
+                const sub = document.getElementById("bannerSubtitle");
+                if (sub) {
+                    sub.textContent = `${passed} Passed, ${failed} Defect(s) Detected. Comprehensive report and charts ready.`;
+                }
+            }
+
+            // MAJOR FEATURE: Open report separately in another page automatically as requested!
+            setTimeout(() => {
+                window.open("report.html", "_blank");
+            }, 600);
+
+        } catch (error) {
+            output.textContent = "Execution Error: " + error.message;
+            analysis.textContent = "Unable to generate test report. Check backend server and try again.";
+            reportSection.hidden = true;
+        } finally {
+            button.disabled = false;
+            button.innerHTML = '<i class="bi bi-play-circle-fill"></i> Run All Tests (Suite)';
+        }
+    }
+
+    // DOWNLOAD FAILED TESTS TABLE AS CSV
+    function downloadFailedAnalysisCSV() {
+        if (!lastFailedRows || !lastFailedRows.length) {
+            alert("No failed tests available to export. Run a test first!");
+            return;
+        }
+
+        const headers = ["#", "Test case name", "Status", "Expected result", "Actual result", "Severity", "Recommended solution"];
+        const csvRows = [headers.map(escapeCSV).join(",")];
+
+        lastFailedRows.forEach(r => {
+            const combinedSolution = r.solutions.map((s, i) => `${i + 1}. ${s}`).join(" ");
+            const row = [
+                r.num.toString(),
+                r.testName,
+                r.status,
+                r.expected,
+                r.actual,
+                r.severity,
+                combinedSolution
+            ];
+            csvRows.push(row.map(escapeCSV).join(","));
+        });
+
+        const csvString = "\uFEFF" + csvRows.join("\r\n");
+        const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `TestNova_Failed_Test_Analysis_${Date.now()}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    function escapeCSV(text) {
+        const str = String(text ?? "").replace(/"/g, '""');
+        return `"${str}"`;
+    }
+
+    // COPY TABLE AS TAB-SEPARATED VALUES FOR EXCEL / SHEETS
+    function copyAnalysisTable() {
+        if (!lastFailedRows || !lastFailedRows.length) {
+            alert("No failed test data to copy.");
+            return;
+        }
+
+        const headers = ["#", "Test case name", "Status", "Expected result", "Actual result", "Severity", "Recommended solution"];
+        let tsv = headers.join("\t") + "\n";
+
+        lastFailedRows.forEach(r => {
+            const combinedSolution = r.solutions.map((s, i) => `${i + 1}. ${s}`).join(" ");
+            tsv += `${r.num}\t${r.testName}\t${r.status}\t${r.expected}\t${r.actual}\t${r.severity}\t${combinedSolution}\n`;
+        });
+
+        navigator.clipboard.writeText(tsv).then(() => {
+            const btn = document.getElementById("copyAnalysisBtn");
+            if (btn) {
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<i class="bi bi-check2"></i> Copied Table!';
+                setTimeout(() => { btn.innerHTML = orig; }, 2200);
+            }
+        });
+    }
+
+    // COPY ANALYSIS
+    function copyAnalysis() {
+        const content = document.getElementById("analysisOutput");
+        const btn = document.getElementById("copyAnalysisBtn");
+        if (!content || !btn) return;
+
+        navigator.clipboard.writeText(content.innerText || content.textContent).then(() => {
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="bi bi-check2"></i> Copied!';
+            setTimeout(() => { btn.innerHTML = originalHTML; }, 2000);
+        });
+    }
+
+    // HELPER: ESCAPE REPORT STRINGS
+    function escapeReportText(value) {
+        return String(value ?? "Not provided").replace(/[&<>"']/g, character => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        })[character]);
+    }
+
+    function getReportStatus(status) {
+        const normalized = String(status || "UNKNOWN").toUpperCase();
+        if (normalized === "PASS") return { label: "PASS", className: "pass" };
+        if (normalized === "FAIL") return { label: "FAIL", className: "fail" };
+        if (normalized === "ERROR") return { label: "ERROR", className: "error" };
+        return { label: normalized, className: "not-tested" };
+    }
+
+    function renderExecutionReport(report) {
+        const summary = report.summary || {};
+        const results = Array.isArray(report.results) ? report.results : [];
+        const passedCount = Number(summary.passed) || 0;
+        const failedCount = Number(summary.failed) || 0;
+        const errorCount = Number(summary.errors) || 0;
+        const totalCount = Number(summary.total) || results.length;
+        const successRate = totalCount ? Math.round((passedCount / totalCount) * 100) : 0;
+
+        const callout = document.getElementById("overallReportCallout");
+        const hasIssues = failedCount + errorCount > 0;
+
+        callout.innerHTML = `
+            <h3><i class="bi bi-${hasIssues ? "exclamation-triangle-fill" : "check-circle-fill"}" style="color: ${hasIssues ? "#f87171" : "#34d399"}"></i>
+                Overall Status: ${hasIssues ? "Bugs / Issues Detected" : "All Tests Passed"}
+            </h3>
+            <p><strong>${failedCount + errorCount} issue(s)</strong> detected across <strong>${totalCount} executed test(s)</strong>.</p>
+            <p style="margin-top: 8px; font-size: 13px;">Success Rate: <span style="font-weight: 800; color: ${successRate > 50 ? "#34d399" : "#f87171"};">${successRate}%</span></p>
+            <p style="margin-top: 12px; font-size: 13px; color: var(--text-muted);">
+                ${hasIssues
+                    ? "Review the failed assertions below or open the full audit report for AI root-cause diagnostics."
+                    : "All test cases completed successfully against ShopBug."}
+            </p>`;
+
+        const tbody = document.getElementById("executionResultsBody");
+        if (!results.length) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-dark); padding: 20px;">No test results were returned.</td></tr>';
+        } else {
+            tbody.innerHTML = results.map((test, index) => {
+                const status = getReportStatus(test.status);
+                return `<tr>
+                    <td>${index + 1}</td>
+                    <td><strong>${escapeReportText(test.testName || "Unnamed test")}</strong></td>
+                    <td style="color: var(--text-muted);">${escapeReportText(test.expected)}</td>
+                    <td style="font-family: 'JetBrains Mono', monospace; font-size: 12px;">${escapeReportText(test.actual)}</td>
+                    <td><span class="report-status ${status.className}">${status.label}</span></td>
+                </tr>`;
+            }).join("");
+        }
+
+        const featureDefinitions = [
+            { label: "Login", keywords: ["login", "sign in", "authentication"] },
+            { label: "Product Search", keywords: ["search", "filter"] },
+            { label: "Shopping Cart", keywords: ["cart", "add product"] },
+            { label: "Checkout", keywords: ["checkout", "address", "order"] },
+            { label: "Payment", keywords: ["payment", "upi", "card"] }
+        ];
+
+        const featureOverview = document.getElementById("featureOverview");
+        featureOverview.innerHTML = featureDefinitions.map(feature => {
+            const matchingTests = results.filter(test => {
+                const name = String(test.testName || "").toLowerCase();
+                return feature.keywords.some(keyword => name.includes(keyword));
+            });
+
+            let label = "Not tested";
+            let statusClass = "not-tested";
+            let detail = "No matching test in this run";
+
+            if (matchingTests.length) {
+                const hasError = matchingTests.some(test => test.status === "ERROR");
+                const hasFailure = matchingTests.some(test => test.status === "FAIL");
+                const allPassed = matchingTests.every(test => test.status === "PASS");
+
+                if (hasError) { label = "Execution error"; statusClass = "error"; }
+                else if (hasFailure) { label = "Bug detected"; statusClass = "fail"; }
+                else if (allPassed) { label = "Passed"; statusClass = "pass"; }
+                detail = `${matchingTests.length} assertion(s) run`;
+            }
+
+            return `<div class="report-feature">
+                <span><strong>${feature.label}</strong><small>${detail}</small></span>
+                <span class="report-status ${statusClass}">${label}</span>
+            </div>`;
+        }).join("");
+    }
+
+    // CLEAR ACTIONS
+    function clearGenerator() {
+        document.getElementById("sourceCode").value = "";
+        document.getElementById("aiOutput").textContent = "";
+    }
+
+    function clearExecution() {
+        document.getElementById("analyticsSection").hidden = true;
+        const banner = document.getElementById("executionBanner");
+        if (banner) banner.style.display = "none";
+
+        if (testPieChart) {
+            testPieChart.destroy();
+            testPieChart = null;
+        }
+
+        if (featureBarChart) {
+            featureBarChart.destroy();
+            featureBarChart = null;
+        }
+
+        document.getElementById("executionOutput").textContent = "";
+        document.getElementById("analysisOutput").textContent = "No test execution recorded yet.";
+
+        total = 0;
+        passed = 0;
+        failed = 0;
+        updateStats();
+    }
+
+    // SIDEBAR ACTIVE OBSERVER
+    document.querySelectorAll(".nav-link").forEach(link => {
+        link.addEventListener("click", () => {
+            document.querySelectorAll(".nav-link").forEach(item => {
+                item.classList.remove("active");
+            });
+            link.classList.add("active");
+        });
+    });
+</script>
+
+</body>
+</html>
